@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
-import { FaGithub, FaPlus } from 'react-icons/fa'
+import { FaGithub, FaPlus, FaSpinner } from 'react-icons/fa'
 import { Container, Form, SubmitButton } from "./styles";
+import { toast } from "react-toastify";
 
 import api from "../../services/api";
 
@@ -8,20 +9,32 @@ function Main() {
 
     const [newRepo, setNewRepo] = useState('')
     const [repositorios, setRepositorios] = useState([])
+    const [loading, setLoading] = useState(false)
 
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
 
         async function submit() {
-            const response = await api.get(`repos/${newRepo}`)
+            setLoading(true)
 
-            const data = {
-                name: response.data.full_name
+            try {
+
+                const response = await api.get(`repos/${newRepo}`)
+
+                const data = {
+                    name: response.data.full_name
+                }
+
+                setRepositorios([...repositorios, data])
+                toast.success('Encontrado')
+                setNewRepo('')
+
+            } catch (err) {
+                toast.error('Repositório não encontrado...')
+            } finally {
+                setLoading(false)
             }
-
-            setRepositorios([...repositorios, data])
-            setNewRepo('')
         }
 
         submit()
@@ -42,8 +55,13 @@ function Main() {
                     onChange={(e) => setNewRepo(e.target.value)}
                 />
 
-                <SubmitButton>
-                    <FaPlus color="#fff" size={14} />
+                <SubmitButton loading={loading ? 1 : 0}>
+                    {loading ? (
+                        <FaSpinner color="#fff" size={14} />
+                    ) : (
+
+                        <FaPlus color="#fff" size={14} />
+                    )}
                 </SubmitButton>
             </Form>
         </Container>
