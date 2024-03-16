@@ -1,8 +1,12 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 
 function Repositorio() {
+    const { repositorio } = useParams()
     return (
-        <h1>Repo</h1>
+        <div style={{ color: 'white' }}>
+            {decodeURIComponent(repositorio)}
+        </div>
     )
 }
 
