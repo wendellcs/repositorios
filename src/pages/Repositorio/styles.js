@@ -136,3 +136,31 @@ export const PageActions = styled.div`
     }
 
 `
+
+export const FilterList = styled.div`
+    width: 100%;
+    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+
+    button {
+        outline: 0;
+        border: 1px solid #999;
+        background: none;
+        border-radius: 4px;
+        padding: 5px 8px;
+        transition: .3s;
+
+        &:hover {
+            background: #0D2636;
+            color: #FFF;
+        }
+
+        &:nth-child(${props => props.active + 1}) {
+            background: #0D2636;
+            color: #FFF;
+        }
+    }
+
+`
